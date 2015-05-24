@@ -1,0 +1,36 @@
+Name: Chul Hee Woo
+UCLA ID: 304189459
+
+Collaborators: Solo Project
+
+-------------------------------------------------------------------------------
+
+Response to Exercise 1: 
+Yes, it will still return the correct value since %eax register is assigned
+current->p_pid before run(current) or schedule(), and schedule does not touch
+the value in %eax.
+
+
+Anything else you'd like us to know:
+
+Describing Exercise 3: First, I put a new element in the processor descriptor
+A pointer to process_t named wait_queue, like the spec recommended. I took out
+the code line, assigning %eax register to -2, and instead made the calling
+process's p_state to BLOCKED, and assigned the child's wait_queue to point to
+the calling process, the current pointer. This stops the return value of -2,
+stopping the polling. Instead, it waits until the child process calls sys_exit
+where if the child has a wait_queue with it, the waiting process' p_state is
+changed to RUNNABLE, and its %eax register is assigned the child process' exit
+status. 
+
+Extra credit exercises:
+
+Exercise 5: 
+The code is commented out in mpos-app.c, under the original code for the
+start(void) function. I declared an int * volatile type to point to the x
+variable before the forking. This way this pointer is volatile and is stored
+somewhere in the memory rather than in the stacks of the processes to ignore
+the optimization. So the child process can use this pointer to directly change
+the parent's value of x. 
+
+
